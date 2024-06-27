@@ -1,0 +1,24 @@
+# Ignore node_modules
+node_modules
+
+# Ignore log files
+*.log
+
+# Ignore environment files (if you don't want them in the image)
+
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore build and cache directories
+dist
+cache
+
+# Ignore other unwanted files and directories
+.git
+.gitignore
+.vscode
+.idea
+*.md

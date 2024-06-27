@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    environment:
+      DATABASE_URL: 'postgresql://postgres:postgres@db:5432/coffee'
+      APP_PORT: '${APP_PORT}'
+      APP_HOST: '${APP_HOST}'
+      ACCESS_TOKEN_KEY: '${ACCESS_TOKEN_KEY}'
+      ACCESS_TOKEN_TIME: '${ACCESS_TOKEN_TIME}'
+      REFRESH_TOKEN_KEY: '${REFRESH_TOKEN_KEY}'
+      REFRESH_TOKEN_TIME: '${REFRESH_TOKEN_TIME}'
+    depends_on:
+      - db
+    command: >
+      sh -c "
+        npx prisma migrate deploy &&
+        pnpm run start:prod
+      "
+
+  db:
+    image: postgres:13
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: coffee
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
